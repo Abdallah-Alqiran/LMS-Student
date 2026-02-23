@@ -13,7 +13,7 @@ class EndPoint {
   static String forgotPassword = "auth/forgot-password";
 
 
-  static String getUserDataEndPoint(id) {
+  static String getUserDataEndPoint(String id) {
     return "user/get-user/$id";
   }
 
