@@ -4,81 +4,73 @@ import 'package:lms_student/core/extensions/context_extensions.dart';
 
 class CustomOutlinedButton extends StatelessWidget {
   final String text;
-  final IconData? icon;
-  final bool isIconRight;
-  final Color? color;
-  final Color? textColor;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final VoidCallback? onTap;
   final double? width;
   final double? height;
-  final double? iconPadding; // space betweeen text and icon 
-  final double? bgOpacity;
-  final double? borderOpacity;
-  
+  final double? iconPadding;
+  final double? iconSize;
+  final ButtonStyle? style;
+  final TextStyle? textStyle;
+
   const CustomOutlinedButton({
     super.key,
     required this.text,
-    this.icon,
-    this.isIconRight = true,
-    this.color,
-    this.textColor,
+    this.prefixIcon,
+    this.suffixIcon,
     this.onTap,
     this.width,
     this.height,
     this.iconPadding,
-    this.bgOpacity,
-    this.borderOpacity,
+    this.iconSize,
+    this.style, 
+    this.textStyle,
   });
 
   @override
   Widget build(BuildContext context) {
 
-    final Color baseColor = color ?? context.colorScheme.primary;
-    final Color bgColor = baseColor.withValues(alpha: bgOpacity ?? 0.0);
-    final Color borderColor = baseColor.withValues(alpha: borderOpacity ?? 1.0);
-    final Color textColor = this.textColor ?? borderColor;
+    final Color defaultColor = style?.foregroundColor?.resolve({}) ?? context.colorScheme.primary;
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(8.r),
-        child: Container(
-          width: width != null ? width!.w : 278.w,
-          height: height != null ? height!.h : 50.h,
-          decoration: BoxDecoration(
-            color: bgColor,
-            borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(
-              color: borderColor,
-              width: 1.w, 
-            ),
+    return SizedBox(
+      width: width?.w ?? 278.w,
+      height: height?.h ?? 50.h,
+      child: OutlinedButton(
+        onPressed: onTap,
+        style: style, 
+        child: IconTheme(
+          data: IconThemeData(
+            color: defaultColor,
+            size: iconSize?.w ?? 20.w, 
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (icon != null && !isIconRight) ...[
-                Icon(icon, color: textColor, size: 16.sp),
-                SizedBox(width: iconPadding != null ? iconPadding!.w : 8.w),
+              // if prefix icon exists
+              if (prefixIcon != null) ...[
+                prefixIcon!,
+                SizedBox(width: iconPadding?.w ?? 8.w),
               ],
               
-              Text(
-                text,
-                style: context.textTheme.labelLarge?.copyWith(
-                  color: textColor,
-                  fontWeight: FontWeight.w500,
+              Flexible(
+                child: Text(
+                  text,
+                  style: (textStyle ?? context.textTheme.labelLarge)?.copyWith(
+                    color: defaultColor,
+                  ),
                 ),
               ),
-              
-              if (icon != null && isIconRight) ...[
-                SizedBox(width: iconPadding != null ? iconPadding!.w : 8.w),
-                Icon(icon, color: textColor, size: 16.sp),
+          
+              // if suffix icon exists
+              if (suffixIcon != null) ...[
+                SizedBox(width: iconPadding?.w ?? 8.w),
+                suffixIcon!,
               ],
             ],
           ),
         ),
       ),
     );
-    
   }
 }

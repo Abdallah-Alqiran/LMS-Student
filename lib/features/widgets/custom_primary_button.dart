@@ -4,64 +4,73 @@ import 'package:lms_student/core/extensions/context_extensions.dart';
 
 class CustomPrimaryButton extends StatelessWidget {
   final String text;
-  final IconData? icon;
-  final bool isIconRight;
-  final Color? backgroundColor;
-  final Color? textColor;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final VoidCallback? onTap;
   final double? width;
   final double? height;
-  final double? iconPadding; // space betweeen text and icon 
+  final double? iconPadding;
+  final double? iconSize;
+  final TextStyle? textStyle;
+  final ButtonStyle? style; // دي لو عايزين نعدل علي خاصية معينة ف الباتون مش واخدينها ك باراميتر او حتي نعدل الثيم كله بتاع الباتون
   
-
   const CustomPrimaryButton({
     super.key,
     required this.text,
-    this.icon,
-    this.isIconRight = true,
-    this.backgroundColor,
-    this.textColor,
+    this.prefixIcon,
+    this.suffixIcon,
     this.onTap,
     this.width,
     this.height,
     this.iconPadding,
+    this.iconSize,
+    this.textStyle,
+    this.style,
   });
 
   @override
   Widget build(BuildContext context) {
-    final Color backgroundColor = this.backgroundColor ?? context.colorScheme.primary;
-    final Color textColor = this.textColor ?? context.colorScheme.onPrimary;
 
-    return InkWell(
-        onTap: onTap,
-        
-        child: Container(
-          width: width!=null ? width!.w : 278.w,
-          height: height!=null ? height!.h : 50.h,
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(8.r),
+   final Color defaultColor = textStyle?.color ??style?.foregroundColor?.resolve({}) ??context.colorScheme.onPrimary;
+
+    return SizedBox(
+      width: width?.w ?? 278.w,
+      height: height?.h ?? 50.h,
+      child: ElevatedButton(
+        onPressed: onTap,
+        style: style, //لو فيه ستايل اتبعت هياخده لو مفيش هيستخدم بتاع الثيم عادي
+        child: IconTheme(
+          data: IconThemeData(
+            color: defaultColor,
+            size: iconSize?.w ?? 20.w, 
           ),
           child: Row(
-              mainAxisAlignment: .center,
-              children: [
-                if (icon != null && !isIconRight) ...[
-                  Icon(icon, color: textColor,size: 16.sp,), 
-                  SizedBox(width: iconPadding!=null ? iconPadding!.w : 8.w),
-                ],
-            
-                Text(text,style: context.textTheme.labelLarge?.copyWith(color: textColor),),
-            
-                if (icon != null && isIconRight) ...[
-                   SizedBox(width: iconPadding!=null ? iconPadding!.w : 8.w),
-                  Icon(icon, color: textColor,size: 16.sp,),
-                ]
-                
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // prefix icon if exists
+              if (prefixIcon != null) ...[
+                prefixIcon!,
+                SizedBox(width: iconPadding?.w ?? 8.w),
               ],
-            ),
+          
+              Flexible(
+                child: Text(
+                  text,
+                  style: (textStyle ?? context.textTheme.labelLarge)?.copyWith(
+                    color: defaultColor,
+                  ),
+                ),
+              ),
+          
+              // suffix icon if exists
+              if (suffixIcon != null) ...[
+                SizedBox(width: iconPadding?.w ?? 8.w),
+                suffixIcon!,
+              ],
+            ],
           ),
-      );
-    
-    
+        ),
+      ),
+    );
   }
 }

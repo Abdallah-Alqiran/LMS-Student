@@ -2,70 +2,88 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 
-class CustomTextFormField extends StatelessWidget {
-  final TextEditingController? controller;
+class CustomTextFormField extends StatefulWidget {
   final String hintText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
-  final bool isObscureText;
-  final TextInputType? keyboardType;
+  final bool isPassword;
+  final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final void Function(String)? onChanged;
+  final double? width;
+  final double? height;
 
   const CustomTextFormField({
     super.key,
-    this.controller,
     required this.hintText,
     this.prefixIcon,
     this.suffixIcon,
-    this.isObscureText = false,
-    this.keyboardType,
+    this.isPassword = false,
+    this.controller,
     this.validator,
+    this.keyboardType,
+    this.textInputAction,
+    this.onChanged, 
+    this.width, 
+    this.height,
   });
 
   @override
+  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+}
+
+class _CustomTextFormFieldState extends State<CustomTextFormField> {
+  bool _obscureText = true;
+ 
+  @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      obscureText: isObscureText,
-      keyboardType: keyboardType,
-      validator: validator,
-      // ستايل النص اللي بيتكتب
-      style: context.textTheme.bodyMedium, 
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: context.textTheme.bodyMedium?.copyWith(
-          color: Colors.grey, // أو اللون اللي في التصميم
-        ),
-        prefixIcon: prefixIcon,
-        suffixIcon: suffixIcon,
-        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
-        
-        // الخلفية البيضاء
-        filled: true,
-        fillColor: Colors.white,
-
-        // الحدود في الحالة العادية
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r), // حسب الدوران في فيجما
-          borderSide: BorderSide(
-            color: Colors.grey.shade200, // لون البرواز الخفيف
-            width: 1.w,
+    
+    return Container(
+      decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(8.r),
+    boxShadow: [
+      BoxShadow(
+        color: context.colorScheme.outline.withValues(alpha: 0.25), 
+        blurRadius: 10, 
+        offset: const Offset(0, 4), 
+      ),
+    ],
+  ),
+      child: SizedBox(
+        width: widget.width?.w ?? 324.w,
+        //height: widget.height?.h ?? 51.h,
+        child: TextFormField(
+      
+          textAlignVertical: TextAlignVertical.center,
+          controller: widget.controller,
+          validator: widget.validator,
+          onChanged: widget.onChanged,
+          keyboardType: widget.keyboardType,
+          textInputAction: widget.textInputAction,
+          obscureText: widget.isPassword ? _obscureText : false,
+          style: context.textTheme.bodyMedium,
+      
+      
+          decoration: InputDecoration(
+            hintText: widget.hintText,
+            prefixIconColor: context.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+            suffixIconColor: context.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+            prefixIcon: widget.prefixIcon,
+            suffixIcon: widget.isPassword
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                    icon: Icon(
+                      _obscureText ? Icons.visibility_off : Icons.visibility,
+                    ),
+                  )
+                : widget.suffixIcon,
           ),
-        ),
-
-        // الحدود لما تضغطي على الحقل
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r),
-          borderSide: BorderSide(
-            color: context.colorScheme.primary, // لون البريماري لما يتفعل
-            width: 1.w,
-          ),
-        ),
-
-        // الحدود في حالة الخطأ
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16.r),
-          borderSide: const BorderSide(color: Colors.red),
         ),
       ),
     );
