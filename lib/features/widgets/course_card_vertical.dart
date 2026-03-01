@@ -2,13 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/features/widgets/custom_image.dart';
 
 class CourseCardVertical extends StatelessWidget {
   final String title;
   final String imagePath;
   final String? description;
   final String? instructorName;
-  final double rating;
+  final double? rating;
   final int? totalHours;
   final Color? backgroundColor;
   final double? width;
@@ -21,7 +22,7 @@ class CourseCardVertical extends StatelessWidget {
     required this.imagePath,
     this.description,
     this.instructorName,
-    required this.rating,
+    this.rating,
     this.totalHours,
     this.backgroundColor,
     this.width,
@@ -39,7 +40,7 @@ class CourseCardVertical extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: context.colorScheme.onSecondary.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -52,26 +53,9 @@ class CourseCardVertical extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AspectRatio(
-              aspectRatio: 16 / 10,  // نسبة العرض الي الطول 
-              child: ClipRRect(  // عشان يبقي شكل الصورة ليها راديس من فوق زي الكونتينر 
-                borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
-                child: CachedNetworkImage(
-                  imageUrl: imagePath,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                  // ده بيظهر عقبال ما الصورة تيجي من ال api
-                  placeholder: (context, url) => Container(
-                    color: context.colorScheme.surfaceVariant,
-                    child: const Center(child: CircularProgressIndicator()),
-                  ),
-                  // لو الصورة حصل فيها مشكلة
-                  errorWidget: (context, url, error) => Container(
-                    color: context.colorScheme.onSurfaceVariant,
-                    child: const Icon(Icons.broken_image, color: Colors.grey),
-                  ),
-                ),
-              ),
+           CustomImage(
+              imagePath: imagePath,
+              aspectRatio: 16 / 10,
             ),
             Padding(
               padding: EdgeInsets.all(12.w),
@@ -127,7 +111,7 @@ class CourseCardVertical extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // rating
-                        Row(
+                       if (rating != null) Row(
                           children: [
                             Icon(Icons.star, color: Colors.amber, size: 18.w),
                             SizedBox(width: 4.w),

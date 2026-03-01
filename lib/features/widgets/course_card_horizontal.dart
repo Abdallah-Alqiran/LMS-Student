@@ -2,12 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/features/widgets/custom_image.dart';
 
 class CourseCardHorizontal extends StatelessWidget {
   final String title;
   final String imagePath;
   final String instructorName;
-  final String? nextLesson;
   final double? progressValue; 
   final int? progressPercentage;
   final double? width;
@@ -19,7 +19,6 @@ class CourseCardHorizontal extends StatelessWidget {
     required this.title,
     required this.imagePath,
     required this.instructorName,
-    this.nextLesson,
     this.progressValue,
     this.progressPercentage, 
     this.width, 
@@ -38,7 +37,7 @@ class CourseCardHorizontal extends StatelessWidget {
         borderRadius: BorderRadius.circular(20.r), 
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: context.colorScheme.onSecondary.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -50,18 +49,10 @@ class CourseCardHorizontal extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // image 
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15.r),
-                child: CachedNetworkImage(
-                  imageUrl: imagePath,
-                  width: 80.w,
-                  height: 80.w,
-                  fit: BoxFit.cover,
-                  errorWidget: (context, url, error) => Container(
-                    color: Colors.grey[200],
-                    child: Icon(Icons.broken_image, size: 30.w),
-                  ),
-                ),
+              CustomImage(
+                imagePath: imagePath,
+                width: 80.w,
+                height: 80.h,
               ),
               SizedBox(width: 12.w),
 
@@ -89,23 +80,6 @@ class CourseCardHorizontal extends StatelessWidget {
                     ),
                     SizedBox(height: 14.h),
                     
-
-                    if(nextLesson != null) ...[
-                      //SizedBox(height: 6.h),
-                      Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Next: $nextLesson',
-                          style: context.textTheme.labelSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: context.colorScheme.primary,
-                          ),
-                        ),
-                        
-                      ],
-                    ),
-                    ],
                     
                     if(rating != null)Row(
                           children: [

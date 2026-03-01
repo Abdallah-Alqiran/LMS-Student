@@ -105,7 +105,6 @@ class TestScreen extends StatelessWidget {
                   imagePath:
                       'https://i.pinimg.com/1200x/54/6b/8a/546b8a6248d8bb62b223c68703786d8f.jpg',
                   instructorName: 'Mayar Abdelrahim',
-                  nextLesson: 'Next Lesson',
                    progressValue: 0.5,
                    progressPercentage: 50,
                   width: 300.w,
