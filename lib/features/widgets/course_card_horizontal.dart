@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
@@ -6,7 +5,7 @@ import 'package:lms_student/features/widgets/custom_image.dart';
 
 class CourseCardHorizontal extends StatelessWidget {
   final String title;
-  final String imagePath;
+  final String? imagePath;
   final String instructorName;
   final double? progressValue; 
   final int? progressPercentage;
@@ -17,7 +16,7 @@ class CourseCardHorizontal extends StatelessWidget {
   const CourseCardHorizontal({
     super.key,
     required this.title,
-    required this.imagePath,
+    this.imagePath,
     required this.instructorName,
     this.progressValue,
     this.progressPercentage, 
@@ -49,10 +48,15 @@ class CourseCardHorizontal extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // image 
-              CustomImage(
-                imagePath: imagePath,
+              SizedBox(
                 width: 80.w,
-                height: 80.h,
+                child: CustomImage(
+                  imagePath: imagePath,
+                  // width: 80.w,
+                  // height: 80.h,
+                  aspectRatio: 1,
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
               ),
               SizedBox(width: 12.w),
 

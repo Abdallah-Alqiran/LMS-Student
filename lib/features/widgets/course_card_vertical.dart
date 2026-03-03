@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
@@ -6,7 +5,7 @@ import 'package:lms_student/features/widgets/custom_image.dart';
 
 class CourseCardVertical extends StatelessWidget {
   final String title;
-  final String imagePath;
+  final String? imagePath;
   final String? description;
   final String? instructorName;
   final double? rating;
@@ -19,7 +18,7 @@ class CourseCardVertical extends StatelessWidget {
   const CourseCardVertical({
     super.key,
     required this.title,
-    required this.imagePath,
+    this.imagePath,
     this.description,
     this.instructorName,
     this.rating,

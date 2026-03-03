@@ -8,25 +8,41 @@ class CustomImage extends StatelessWidget {
   final double? width;
   final double? height;
   final double? aspectRatio;
+  final BorderRadiusGeometry? borderRadius;
 
   const CustomImage({
     super.key,
     this.imagePath,
     this.width,
     this.height,
-    this.aspectRatio,
+    this.aspectRatio, 
+    this.borderRadius,
   });
 
   @override
   Widget build(BuildContext context) {
+
+    if (imagePath == null || imagePath!.isEmpty) {
+    return AspectRatio(
+      aspectRatio: aspectRatio ?? 16 / 10,
+      child: ClipRRect(
+        borderRadius: borderRadius ?? BorderRadius.vertical(top: Radius.circular(12.r)),
+        child: Container(
+          color: context.colorScheme.surfaceVariant,
+          child: Icon(Icons.image_not_supported, color: context.colorScheme.outline),
+        ),
+      ),
+    );
+  }
+
     return AspectRatio(
       aspectRatio: aspectRatio ?? 16 / 10, // نسبة العرض الي الطول
       child: ClipRRect(
         // عشان يبقي شكل الصورة ليها راديس من فوق زي الكونتينر
-        borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
+        borderRadius: borderRadius ?? BorderRadius.vertical(top: Radius.circular(12.r)),
         child: CachedNetworkImage(
           imageUrl: imagePath ?? '',
-          width: width?.w ?? double.infinity,
+          width: width?.w,
           height: height?.h,
           fit: BoxFit.cover,
           // ده بيظهر عقبال ما الصورة تيجي من ال api
