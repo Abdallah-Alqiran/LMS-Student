@@ -1,80 +1,9 @@
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-
-// class CustomNavBar extends StatelessWidget {
-//   final int currentIndex;
-//   final Function(int) onTap;
-
-//   const CustomNavBar({
-//     super.key,
-//     required this.currentIndex,
-//     required this.onTap,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: double.infinity,
-//       height: 65,
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         // borderRadius: BorderRadius.circular(35),
-//       ),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//         children: [
-//           navItem(icon: CupertinoIcons.home, label: "Home", index: 0),
-//           navItem(icon: CupertinoIcons.compass, label: "Explore", index: 1),
-//           navItem(icon: CupertinoIcons.book, label: "My Learning", index: 2),
-//           navItem(icon: CupertinoIcons.person, label: "Profile", index: 3),
-//         ],
-//       ),
-//     );
-//   }
-
-//   Widget navItem({
-//     required IconData icon,
-//     required String label,
-//     required int index,
-//   }) {
-//     bool isSelected = currentIndex == index;
-
-//     return GestureDetector(
-//       onTap: () => onTap(index),
-//       child: AnimatedContainer(
-//         duration: const Duration(milliseconds: 250),
-//         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-//         decoration: BoxDecoration(
-//           color: isSelected
-//               ? Colors.white.withValues(alpha: 0.5)
-//               : Colors.transparent,
-//           borderRadius: BorderRadius.circular(20),
-//         ),
-//         child: Row(
-//           children: [
-//             Icon(icon, color: Color(0xFF0A5C75)),
-
-//             /// يظهر النص فقط لو مختار
-//             if (isSelected) ...[
-//               const SizedBox(width: 6),
-//               Text(
-//                 label,
-//                 style: const TextStyle(
-//                   color: Color(0xFF0A5C75),
-//                   fontWeight: FontWeight.w500,
-//                 ),
-//               ),
-//             ],
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 
 class CustomNavBar extends StatelessWidget {
   final int currentIndex;
@@ -93,21 +22,37 @@ class CustomNavBar extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
         child: Container(
           width: double.infinity,
-          height: 65,
+          height: 88.h,
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.08), // شفافية
+            color: context.colorScheme.surface.withValues(alpha: 0.08),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              navItem(icon: CupertinoIcons.home, label: "Home", index: 0),
-              navItem(icon: CupertinoIcons.compass, label: "Explore", index: 1),
+              navItem(
+                icon: CupertinoIcons.home,
+                label: context.tr("home"),
+                index: 0,
+                context: context,
+              ),
+              navItem(
+                icon: CupertinoIcons.compass,
+                label: context.tr("explore"),
+                index: 1,
+                context: context,
+              ),
               navItem(
                 icon: CupertinoIcons.book,
-                label: "My Learning",
+                label: context.tr("my_learning"),
                 index: 2,
+                context: context,
               ),
-              navItem(icon: CupertinoIcons.person, label: "Profile", index: 3),
+              navItem(
+                icon: CupertinoIcons.person,
+                label: context.tr("profile"),
+                index: 3,
+                context: context,
+              ),
             ],
           ),
         ),
@@ -119,6 +64,7 @@ class CustomNavBar extends StatelessWidget {
     required IconData icon,
     required String label,
     required int index,
+    required BuildContext context,
   }) {
     bool isSelected = currentIndex == index;
 
@@ -129,20 +75,28 @@ class CustomNavBar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? Colors.white.withValues(alpha: 0.15)
+              ? context.colorScheme.surface.withValues(alpha: 0.15)
               : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Color(0xFF0A5C75)),
+            Icon(
+              icon,
+              color: isSelected
+                  ? context.colorScheme.primary
+                  : context.colorScheme.onSurface.withValues(alpha: 0.5),
+              size: 24.sp,
+            ),
             if (isSelected) ...[
-              const SizedBox(width: 6),
+              SizedBox(height: 3.h),
               Text(
                 label,
-                style: const TextStyle(
-                  color: Color(0xFF0A5C75),
-                  fontWeight: FontWeight.w500,
+                style: context.textTheme.labelSmall!.copyWith(
+                  color: context.colorScheme.primary,
+                  fontSize: 10.sp,
+                  fontWeight: FontWeight.normal,
                 ),
               ),
             ],
