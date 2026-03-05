@@ -6,15 +6,16 @@ import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:lms_student/features/auth/presentation/screens/login_screen/login_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/register_screen/register_screen.dart';
+import 'package:lms_student/root/root.dart';
 import 'package:lms_student/test_screen.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: '/test',
+    initialLocation: AppRoutes.homeScreen,
     routes: [
-      // for test 
+      // for test
       GoRoute(
-        path: '/test', 
+        path: '/test',
         name: 'test_widgets',
         builder: (context, state) => const TestScreen(),
       ),
@@ -47,7 +48,7 @@ class RouterGenerator {
       GoRoute(
         path: AppRoutes.homeScreen,
         name: AppRoutes.homeScreen,
-        builder: (context, state) => Container(),
+        builder: (context, state) => const Root(),
       ),
       // GoRoute(
       //   path: AppRoutes.loginScreen,
