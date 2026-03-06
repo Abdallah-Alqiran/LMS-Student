@@ -81,8 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
               text: "Login",
               textStyle: TextStyle(color: context.colorScheme.onSurface),
 
-              width: 120.w,
-              height: 40.h,
+              width: 120,
+              height: 40,
             ),
           ),
         ],
