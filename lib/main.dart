@@ -17,20 +17,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(390, 852),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) {
-        return MaterialApp.router(
-          supportedLocales: const [Locale('en'), Locale('ar')],
-          locale: const Locale('en'),
-          debugShowCheckedModeBanner: false,
-          title: 'LMS Student',
-          theme: AppTheme.lightTheme,
-          routerConfig: RouterGenerator.goRouter,
-        );
-      },
+    return SafeArea(
+      top: false,
+      left: false,
+      right: false,
+      child: ScreenUtilInit(
+        designSize: const Size(390, 852),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return MaterialApp.router(
+            supportedLocales: const [Locale('en'), Locale('ar')],
+            locale: const Locale('en'),
+            debugShowCheckedModeBanner: false,
+            title: 'LMS Student',
+            theme: AppTheme.lightTheme,
+            routerConfig: RouterGenerator.goRouter,
+          );
+        },
+      ),
     );
   }
 }
