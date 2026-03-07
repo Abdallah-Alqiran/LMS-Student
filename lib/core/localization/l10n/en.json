@@ -1,4 +1,6 @@
 {
-  "Hello": "Hello",
-  "welcom_to_lms_student": "Welcom to LMS Student"
+  "home": "Home",
+  "explore": "Explore",
+  "my_learning": "My Learning",
+  "profile": "Profile"
 }
