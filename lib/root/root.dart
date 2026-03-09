@@ -4,7 +4,8 @@ import 'package:lms_student/features/explore/presentation/explore_screen_befor_l
 import 'package:lms_student/features/home/presentation/screens/home_screen.dart';
 import 'package:lms_student/features/home/presentation/screens/home_screen_after_login.dart';
 import 'package:lms_student/root/custom_nav_bar.dart';
-import 'package:lms_student/test_screen.dart';
+import 'package:lms_student/features/auth/presentation/screens/login_screen/login_screen.dart';
+import 'package:lms_student/features/auth/presentation/screens/register_screen/register_screen.dart';
 
 import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
 import 'package:lms_student/core/di/service_locator.dart';
@@ -24,7 +25,8 @@ class _RootState extends State<Root> {
     HomeScreen(),
     ExploreScreenBeforLogin(),
     HomeScreenAfterLogin(),
-    TestScreen(),
+    RegisterScreen(),
+    LoginScreen(),
   ];
 
   void changePage(int index) {

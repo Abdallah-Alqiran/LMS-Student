@@ -1,3 +1,4 @@
+import 'package:lms_student/features/auth/data/model/user_model.dart';
 
 class LoginResponseModel {
   final String message;
