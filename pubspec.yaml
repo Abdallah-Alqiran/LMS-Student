@@ -29,6 +29,7 @@ dependencies:
   cached_network_image: ^3.4.1
   dartz: ^0.10.1
   flutter_svg: ^2.2.4
+  provider: ^6.1.5+1
 
 
 dev_dependencies:

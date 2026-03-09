@@ -6,6 +6,9 @@ import 'package:lms_student/core/services/remote/dio_consumer.dart';
 import 'package:lms_student/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:lms_student/features/auth/domain/repositories/auth_repository.dart';
 import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:lms_student/features/home/data/repositories/home_repository_impl.dart';
+import 'package:lms_student/features/home/domain/repositories/home_repository.dart';
+import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -27,5 +30,9 @@ Future<void> setupServiceLocator() async {
   );
   sl.registerFactory(() => AuthBloc(authRepository: sl()));
 
-  
+  // Features - Home
+  sl.registerLazySingleton<HomeRepository>(
+    () => HomeRepositoryImpl(apiConsumer: sl()),
+  );
+  sl.registerFactory(() => CoursesBloc(homeRepository: sl()));
 }

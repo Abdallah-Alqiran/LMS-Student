@@ -23,7 +23,7 @@ class RouterGenerator {
         name: AppRoutes.loginScreen,
         builder: (context, state) {
           return BlocProvider(
-            create: (context) => sl<AuthBloc>(), // كل مرة ياخد بلوك جديد
+            create: (context) => sl<AuthBloc>(),
             child: const LoginScreen(),
           );
         },
