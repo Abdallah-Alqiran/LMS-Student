@@ -27,9 +27,7 @@ class AuthRepositoryImpl implements AuthRepository {
         data: request.toJson(),
       );
 
-      return Left(
-        RegisterResponseModel.fromJson(response.data, response.statusCode ?? 0),
-      );
+      return Left(RegisterResponseModel.fromJson(response));
     } on DioException catch (e) {
       return Right(DioExceptionHandler.handleException(e));
     } catch (e) {
@@ -49,23 +47,21 @@ class AuthRepositoryImpl implements AuthRepository {
         data: request.toJson(),
       );
 
-      final loginResponse = LoginResponseModel.fromJson(response, 200);
+      final loginResponse = LoginResponseModel.fromJson(response);
 
-      if (loginResponse.isSuccess) {
-        await cacheHelper.saveData(
-          key: ApiKey.accessToken,
-          value: loginResponse.accessToken,
-        );
-        await cacheHelper.saveData(
-          key: ApiKey.refreshToken,
-          value: loginResponse.refreshToken,
-        );
-        await cacheHelper.saveData(
-          key: ApiKey.user,
-          value: loginResponse.user.toJson().toString(),
-        );
-        await cacheHelper.saveData(key: ApiKey.isLoggedIn, value: true);
-      }
+      await cacheHelper.saveData(
+        key: ApiKey.accessToken,
+        value: loginResponse.accessToken,
+      );
+      await cacheHelper.saveData(
+        key: ApiKey.refreshToken,
+        value: loginResponse.refreshToken,
+      );
+      await cacheHelper.saveData(
+        key: ApiKey.user,
+        value: loginResponse.user.toJson().toString(),
+      );
+      await cacheHelper.saveData(key: ApiKey.isLoggedIn, value: true);
 
       return Left(loginResponse);
     } on DioException catch (e) {

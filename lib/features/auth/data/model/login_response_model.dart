@@ -5,14 +5,12 @@ class LoginResponseModel {
   final String accessToken;
   final String refreshToken;
   final UserModel user;
-  final bool isSuccess;
 
   LoginResponseModel({
     required this.message,
     required this.accessToken,
     required this.refreshToken,
     required this.user,
-    required this.isSuccess,
   });
 
   Map<String, dynamic> toJson() {
@@ -23,15 +21,13 @@ class LoginResponseModel {
     'user': user.toJson(),      
   };
 }
-  factory LoginResponseModel.fromJson(Map<String, dynamic> json, int statusCode) {
-    final isSuccess = statusCode == 200;
+  factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
     
     return LoginResponseModel(
       message: json['message'] ?? '',
       accessToken: json['access'] ?? '',
       refreshToken: json['refresh'] ?? '',
       user: UserModel.fromJson(json['user'] ?? {}),
-      isSuccess: isSuccess,
     );
   }
 
@@ -41,12 +37,11 @@ class LoginResponseModel {
       accessToken: '',
       refreshToken: '',
       user: UserModel.fromJson({}),
-      isSuccess: false,
     );
   }
 
   @override
   String toString() {
-    return 'LoginResponseModel(message: $message, isSuccess: $isSuccess)';
+    return 'LoginResponseModel(message: $message)';
   }
 }

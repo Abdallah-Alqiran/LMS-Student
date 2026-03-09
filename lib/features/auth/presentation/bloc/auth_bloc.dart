@@ -30,12 +30,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
 
     result.fold(
       (successResponse) {
-        if (successResponse.isSuccess) {
-          clearLoginControllers();
-          emit(AuthSuccess(data: successResponse));
-        } else {
-          emit(AuthError(message: successResponse.message));
-        }
+        clearLoginControllers();
+        emit(AuthSuccess(data: successResponse));
       },
       (errorMessage) {
         emit(AuthError(message: errorMessage));
@@ -63,12 +59,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> with FormControllersMixin {
 
     result.fold(
       (successResponse) {
-        if (successResponse.isSuccess) {
-          clearRegisterControllers();
-          emit(AuthSuccess(data: successResponse));
-        } else {
-          emit(AuthError(message: successResponse.message));
-        }
+        clearRegisterControllers();
+        emit(AuthSuccess(data: successResponse));
       },
       (errorMessage) {
         emit(AuthError(message: errorMessage));

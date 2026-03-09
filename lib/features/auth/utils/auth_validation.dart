@@ -111,52 +111,5 @@ String? validatePassword(String? value) {
     }
     return 'Password must be 8-32 characters long';
   }
-  final commonPasswords = [
-    'password',
-    'password123',
-    '12345678',
-    'qwerty123',
-    'admin123',
-    'letmein',
-    'welcome',
-    'monkey123',
-  ];
-  if (commonPasswords.contains(value.toLowerCase())) {
-    return 'This password is too common. Please choose a stronger password';
-  }
-  if (_hasSequentialChars(value)) {
-    return 'Password contains sequential characters (like "abc" or "123")';
-  }
-  if (_hasRepeatedChars(value)) {
-    return 'Password contains too many repeated characters';
-  }
-  if (value.contains(RegExp(r'user|admin|test', caseSensitive: false))) {
-    return 'Password contains common words. Please choose a stronger password';
-  }
   return null;
-}
-
-bool _hasSequentialChars(String value) {
-  final lowercase = value.toLowerCase();
-  for (int i = 0; i < lowercase.length - 2; i++) {
-    final a = lowercase.codeUnitAt(i);
-    final b = lowercase.codeUnitAt(i + 1);
-    final c = lowercase.codeUnitAt(i + 2);
-    if (b == a + 1 && c == b + 1) {
-      return true;
-    }
-    if (a >= 48 && a <= 57 && b == a + 1 && c == b + 1) {
-      return true;
-    }
-  }
-  return false;
-}
-
-bool _hasRepeatedChars(String value) {
-  for (int i = 0; i < value.length - 2; i++) {
-    if (value[i] == value[i + 1] && value[i] == value[i + 2]) {
-      return true;
-    }
-  }
-  return false;
 }
