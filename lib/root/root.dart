@@ -22,7 +22,7 @@ class _RootState extends State<Root> {
   int currentIndex = 0;
 
   List<Widget> screens = [
-    HomeScreen(),
+    HomeScreenAfterLogin(),
     ExploreScreenBeforLogin(),
     HomeScreenAfterLogin(),
     RegisterScreen(),
