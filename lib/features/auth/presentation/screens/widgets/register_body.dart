@@ -225,14 +225,10 @@ class RegisterBody extends StatelessWidget {
                         side: BorderSide(color: context.colorScheme.outline),
                       ),
                       width: 287.w,
-                      text: 'Continue With Google',
+                      text: 'Continue as a Guest',
                       onTap: () {
-                        // Google Sign In
+                        context.go(AppRoutes.homeScreen);
                       },
-                      prefixIcon: SvgPicture.asset(
-                        "assets/icons/google.svg",
-                        width: 20,
-                      ),
                     ),
                   ),
 
