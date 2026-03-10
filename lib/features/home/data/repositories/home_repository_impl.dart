@@ -15,9 +15,6 @@ class HomeRepositoryImpl implements HomeRepository {
   Future<Either<List<CourseModel>, String>> getAllCourses() async {
     try {
       final response = await apiConsumer.get(EndPoint.allCourses);
-
-      // التحقق من شكل الـ response
-      // هل البيانات جاية في key اسمه 'data' ولا مباشرة؟
       List<CourseModel> courses = [];
 
       if (response['data'] != null && response['data'] is List) {
@@ -26,7 +23,6 @@ class HomeRepositoryImpl implements HomeRepository {
             .map((json) => CourseModel.fromJson(json))
             .toList();
       } else if (response is List) {
-        // لو الـ response نفسه عبارة عن List
         courses = response.map((json) => CourseModel.fromJson(json)).toList();
       }
 

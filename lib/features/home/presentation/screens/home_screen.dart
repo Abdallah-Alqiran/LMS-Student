@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     // ✅ إضافة سطر واحد بس هنا
-    context.read<CoursesBloc>().add(FetchCoursesEvent());
+    context.read<CoursesBloc>().add(GetCoursesEvent());
   }
 
   @override
@@ -258,12 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     }
 
-                    // 🟡 لو لسبب ما مطلعش أي حالة من اللي فوق
-                    // (نادراً ما يحصل)
-                    return Container(
-                      height: 280.h,
-                      child: Center(child: Text('برجاء الانتظار...')),
-                    );
+                    return CircularProgressIndicator();
                   },
                 ),
                 SizedBox(height: 40.h),

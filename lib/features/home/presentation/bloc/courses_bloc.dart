@@ -11,7 +11,7 @@ class CoursesBloc extends Bloc<CoursesEvent, CoursesState> {
 
   CoursesBloc({required this.homeRepository}) : super(CoursesInitial()) {
     // 🟢 Event واحد بس
-    on<FetchCoursesEvent>((event, emit) async {
+    on<GetCoursesEvent>((event, emit) async {
       emit(CoursesLoading()); // 🔵 نشغل التحميل
 
       try {
