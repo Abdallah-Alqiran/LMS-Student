@@ -8,18 +8,19 @@ import 'package:lms_student/features/auth/presentation/screens/forgot_password_s
 import 'package:lms_student/features/auth/presentation/screens/login_screen/login_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/register_screen/register_screen.dart';
 import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
+import 'package:lms_student/features/home/presentation/screens/course_details_screen.dart';
 import 'package:lms_student/features/home/presentation/screens/home_screen.dart';
+import 'package:lms_student/features/splash/presentation/screens/splash_screen.dart';
 import 'package:lms_student/root/root.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: AppRoutes.loginScreen,
+    initialLocation: AppRoutes.splashScreen,
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,
         name: AppRoutes.splashScreen,
-        builder: (context, state) =>
-            const Scaffold(body: Center(child: Text("Splash Screen"))),
+        builder: (context, state) => SplashScreen(),
       ),
       GoRoute(
         path: AppRoutes.loginScreen,
@@ -62,13 +63,18 @@ class RouterGenerator {
         },
       ),
       GoRoute(
+        path: AppRoutes.course_details_screen,
+        name: AppRoutes.course_details_screen,
+        builder: (context, state) {
+          return CourseDetailsScreen();
+        },
+      ),
+      GoRoute(
         path: AppRoutes.homeScreenAfterLogin,
         name: AppRoutes.homeScreenAfterLogin,
         builder: (context, state) {
           return MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: sl<CoursesBloc>()),
-            ],
+            providers: [BlocProvider.value(value: sl<CoursesBloc>())],
             child: const Root(),
           );
         },

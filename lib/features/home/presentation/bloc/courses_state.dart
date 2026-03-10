@@ -7,7 +7,6 @@ sealed class CoursesState extends Equatable {
   List<Object> get props => [];
 }
 
-// 🟡 حالة البداية
 class CoursesInitial extends CoursesState {}
 
 class CoursesLoading extends CoursesState {}
@@ -21,7 +20,6 @@ class CoursesLoaded extends CoursesState {
   List<Object> get props => [courses];
 }
 
-// 🔴 حالة الخطأ
 class CoursesError extends CoursesState {
   final String message;
 

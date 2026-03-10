@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
 import 'package:lms_student/features/home/widgets/custom_rich_text.dart';
 import 'package:lms_student/features/home/widgets/feature_card.dart';
@@ -86,7 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(16.r),
                 ),
               ),
-              onTap: () {},
+              onTap: () {
+                context.push(AppRoutes.loginScreen);
+              },
               text: "Login",
               textStyle: TextStyle(color: context.colorScheme.onSurface),
 
@@ -156,7 +160,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       text: "Start Learning",
                       //Todo: GO TO LOGIN SCREEN
-                      onTap: () {},
+                      onTap: () {
+                        context.push(AppRoutes.loginScreen);
+                      },
                     ),
                   ),
                   SizedBox(height: 20.h),
@@ -242,15 +248,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: state.courses.map((course) {
-                              return CourseCardVertical(
-                                title: course.title,
-                                imagePath: course.image,
-                                rating: 4.3,
-                                totalHours: 12,
-                                width: 256,
-                                description: course.description,
-                                instructorName: course.instructorName,
-                                lessonsCount: 12,
+                              return InkWell(
+                                onTap: () {
+                                  context.push(AppRoutes.course_details_screen);
+                                },
+                                child: CourseCardVertical(
+                                  title: course.title,
+                                  imagePath: course.image,
+                                  rating: 4.3,
+                                  totalHours: 12,
+                                  width: 256,
+                                  description: course.description,
+                                  instructorName: course.instructorName,
+                                  lessonsCount: 12,
+                                ),
                               );
                             }).toList(),
                           ),
@@ -334,7 +345,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   text: "Create Free Account",
                   //Todo: GO TO REGISTER SCREEN
-                  onTap: () {},
+                  onTap: () {
+                    context.push(AppRoutes.registerScreen);
+                  },
                 ),
                 SizedBox(height: 15.h),
                 Text(
