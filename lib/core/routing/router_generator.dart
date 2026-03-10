@@ -13,7 +13,7 @@ import 'package:lms_student/root/root.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
-    initialLocation: AppRoutes.loginScreen,
+    initialLocation: AppRoutes.splashScreen,
     routes: [
       GoRoute(
         path: AppRoutes.splashScreen,
@@ -66,9 +66,7 @@ class RouterGenerator {
         name: AppRoutes.homeScreenAfterLogin,
         builder: (context, state) {
           return MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: sl<CoursesBloc>()),
-            ],
+            providers: [BlocProvider.value(value: sl<CoursesBloc>())],
             child: const Root(),
           );
         },
