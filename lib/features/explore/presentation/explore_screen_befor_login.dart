@@ -62,10 +62,7 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
                     shape: BoxShape.circle,
                     color: context.colorScheme.onPrimary,
                   ),
-                  child: Icon(
-                    Icons.filter_hdr_rounded,
-                    color: context.colorScheme.primary,
-                  ),
+                  child: Icon(Icons.tune, color: context.colorScheme.primary),
                 ),
               ],
             ),
