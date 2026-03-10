@@ -35,7 +35,7 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
-  Future<Either<CourseModel, String>> getCourseById(String slug) {
+  Future<Either<CourseModel, String>> getCourseBySlug(String slug) {
     throw UnimplementedError();
   }
 

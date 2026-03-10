@@ -234,7 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (state is CoursesError) {
                       return Container(
                         height: 280.h,
-                        child: Center(child: Text('حدث خطأ: ${state.message}')),
+                        child: Center(child: Text('Error : ${state.message}')),
                       );
                     }
                     if (state is CoursesLoaded) {
@@ -249,6 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   context.push(AppRoutes.course_details_screen);
                                 },
                                 child: CourseCardVertical(
+                                  //Todo ::Handel nullable
                                   title: course.title,
                                   imagePath: course.image,
                                   rating: 4.3,
