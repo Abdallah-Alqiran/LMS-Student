@@ -134,6 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Text(
                           'Master Python, React, and more with expert-led courses designed specifically for mobilelearners.',
                           maxLines: 3,
+
                           overflow: TextOverflow.ellipsis,
                           style: context.textTheme.labelSmall!.copyWith(
                             color: context.colorScheme.surface,
@@ -218,23 +219,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 20.h),
                 BlocBuilder<CoursesBloc, CoursesState>(
                   builder: (context, state) {
-                    // 🔵 حالة التحميل
                     if (state is CoursesLoading) {
                       return Container(
                         height: 280.h,
                         child: Center(child: CircularProgressIndicator()),
                       );
                     }
-
-                    // 🔴 حالة الخطأ
                     if (state is CoursesError) {
                       return Container(
                         height: 280.h,
                         child: Center(child: Text('حدث خطأ: ${state.message}')),
                       );
                     }
-
-                    // 🟢 حالة نجاح جلب البيانات
                     if (state is CoursesLoaded) {
                       return SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
