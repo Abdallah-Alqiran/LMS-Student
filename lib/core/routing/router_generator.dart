@@ -6,6 +6,7 @@ import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:lms_student/features/auth/presentation/screens/forgot_password_screen/forgot_password_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/login_screen/login_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/register_screen/register_screen.dart';
+import 'package:lms_student/features/explore/presentation/explore_screen_befor_login.dart';
 import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
 import 'package:lms_student/features/home/presentation/screens/course_details_screen.dart';
 import 'package:lms_student/features/home/presentation/screens/home_screen.dart';
@@ -57,7 +58,7 @@ class RouterGenerator {
         builder: (context, state) {
           return BlocProvider(
             create: (context) => sl<CoursesBloc>(),
-            child: const HomeScreen(),
+            child: const ExploreScreenBeforLogin(),
           );
         },
       ),
