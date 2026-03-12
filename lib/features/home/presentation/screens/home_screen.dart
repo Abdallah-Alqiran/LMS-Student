@@ -1,12 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/core/routing/app_routes.dart';
+import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
 import 'package:lms_student/features/home/widgets/custom_rich_text.dart';
 import 'package:lms_student/features/home/widgets/feature_card.dart';
 import 'package:lms_student/features/widgets/course_card_vertical.dart';
 import 'package:lms_student/features/widgets/custom_outlined_button.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,6 +21,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // ✅ إضافة سطر واحد بس هنا
+    context.read<CoursesBloc>().add(GetCoursesEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,8 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(16.r),
                 ),
               ),
-              onTap: () {},
-              text: "Login",
+              onTap: () {
+                context.push(AppRoutes.loginScreen);
+              },
+              text: context.tr('login'),
               textStyle: TextStyle(color: context.colorScheme.onSurface),
 
               width: 120,
@@ -123,8 +137,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Padding(
                         padding: EdgeInsets.all(16.w),
                         child: Text(
-                          'Master Python, React, and more with expert-led courses designed specifically for mobilelearners PLPLPLPLPLPPLPPLPPLLPLPLPLPLPLPLPLPLPPLPLPLPLPLPLPLPLPLPLP.',
+                          context.tr('master_python_react'),
                           maxLines: 3,
+
                           overflow: TextOverflow.ellipsis,
                           style: context.textTheme.labelSmall!.copyWith(
                             color: context.colorScheme.surface,
@@ -145,15 +160,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       textStyle: TextStyle(color: context.colorScheme.primary),
 
-                      text: "Start Learning",
+                      text: context.tr('start_learning'),
                       //Todo: GO TO LOGIN SCREEN
-                      onTap: () {},
+                      onTap: () {
+                        context.push(AppRoutes.loginScreen);
+                      },
                     ),
                   ),
                   SizedBox(height: 20.h),
                   Center(
                     child: CustomOutlinedButton(
-                      text: "Browse Courses",
+                      text: context.tr('browse_courses'),
                       textStyle: TextStyle(color: Colors.white),
                       style: OutlinedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -192,13 +209,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Featured Courses",
+                      context.tr('featured_courses'),
                       style: context.textTheme.headlineMedium!.copyWith(
                         color: context.colorScheme.onSurface,
                       ),
                     ),
                     Text(
-                      "View All",
+                      context.tr('view_all'),
                       style: context.textTheme.labelMedium!.copyWith(
                         color: context.colorScheme.primary,
                       ),
@@ -207,53 +224,77 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
                 SizedBox(height: 20.h),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: IntrinsicHeight(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: List.generate(
-                        20,
-                        (index) => CourseCardVertical(
-                          title: 'intro to python ',
-                          imagePath:
-                              'https://i.pinimg.com/1200x/54/6b/8a/546b8a6248d8bb62b223c68703786d8f.jpg',
-                          rating: 4.3,
-                          totalHours: 12,
-                          width: 256,
-                          description:
-                              'description description description description description description description description description description description description',
-                          instructorName: 'instructor name',
-                          lessonsCount: 12,
+                BlocBuilder<CoursesBloc, CoursesState>(
+                  builder: (context, state) {
+                    if (state is CoursesLoading) {
+                      return Container(
+                        height: 280.h,
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                    if (state is CoursesError) {
+                      return Container(
+                        height: 280.h,
+                        child: Center(child: Text('Error : ${state.message}')),
+                      );
+                    }
+                    if (state is CoursesLoaded) {
+                      print("courses from bloc: ${state.courses}");
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: IntrinsicHeight(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: state.courses.map((course) {
+                              return InkWell(
+                                onTap: () {
+                                  context.push(AppRoutes.course_details_screen);
+                                },
+                                child: CourseCardVertical(
+                                  //Todo ::Handel nullable
+                                  title: course.title,
+                                  imagePath: course.image,
+                                  rating: 4.3,
+                                  totalHours: 12,
+                                  width: 256,
+                                  description: course.description,
+                                  instructorName: course.instructorName,
+                                  lessonsCount: 12,
+                                ),
+                              );
+                            }).toList(),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                      );
+                    }
+
+                    return CircularProgressIndicator();
+                  },
                 ),
                 SizedBox(height: 40.h),
                 FeatureCard(
                   description:
-                      'Test your knowledge on the go with real-time feedback and progress tracking.',
+                      context.tr('test_your_knowledge'),
                   path: "assets/icons/InteractiveQuizzes.png",
-                  title: "Interactive Quizzes",
+                  title: context.tr('interactive_quizzes'),
                 ),
                 SizedBox(height: 20.h),
                 FeatureCard(
                   description:
-                      'Test your knowledge on the go with real-time feedback and progress tracking.',
+                      context.tr('test_your_knowledge'),
                   path: "assets/icons/DiscussionBoards.png",
-                  title: "Discussion Boards",
+                  title: context.tr('discussion_boards'),
                 ),
                 SizedBox(height: 20.h),
                 FeatureCard(
                   description:
-                      'Test your knowledge on the go with real-time feedback and progress tracking.',
+                      context.tr('test_your_knowledge'),
                   path: "assets/icons/DownloadableResources.png",
-                  title: "Downloadable Resources",
+                  title: context.tr('downloadable_resources'),
                 ),
                 SizedBox(height: 40.h),
                 CustomOutlinedButton(
-                  text: "Join Us Today",
+                  text: context.tr('join_us_today'),
                   textStyle: context.textTheme.labelSmall!.copyWith(
                     color: context.colorScheme.primary,
                   ),
@@ -277,16 +318,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 35.h),
                 Text(
-                  '''Ready to start your
-        journey?''',
+                  context.tr('ready_to_start_journey'),
                   style: context.textTheme.displayMedium!.copyWith(
                     color: context.colorScheme.onSurface,
                   ),
                 ),
                 SizedBox(height: 35.h),
                 Text(
-                  '''Join 10k+ learners building the future of
-                    technology.''',
+                  context.tr('join_10k_learners'),
                   style: context.textTheme.labelMedium!.copyWith(
                     color: context.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
@@ -301,13 +340,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   textStyle: TextStyle(color: context.colorScheme.onSurface),
 
-                  text: "Create Free Account",
+                  text: context.tr('create_free_account'),
                   //Todo: GO TO REGISTER SCREEN
-                  onTap: () {},
+                  onTap: () {
+                    context.push(AppRoutes.registerScreen);
+                  },
                 ),
                 SizedBox(height: 15.h),
                 Text(
-                  "   No credit card required to start learning.",
+                  context.tr('no_credit_card_required'),
                   style: context.textTheme.labelSmall!.copyWith(
                     fontSize: 10,
                     fontWeight: FontWeight.w500,
@@ -369,7 +410,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox(height: 16.h),
               Text(
-                "© 2024 SkillUp E-Learning Platforms. All rights reserved.",
+                context.tr('all_rights_reserved'),
                 style: context.textTheme.labelSmall!.copyWith(
                   fontSize: 10.sp,
                   color: context.colorScheme.onSurface.withValues(alpha: 0.6),

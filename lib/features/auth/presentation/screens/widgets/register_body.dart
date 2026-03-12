@@ -1,56 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
-import 'package:lms_student/features/auth/data/model/register_request_model.dart';
+import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:lms_student/features/auth/presentation/screens/widgets/auth_toggle_switch.dart';
+import 'package:lms_student/features/auth/utils/auth_validation.dart';
 import 'package:lms_student/features/widgets/custom_outlined_button.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/features/widgets/custom_text_form_field.dart';
+import 'package:lms_student/core/localization/app_localizations.dart';
 
-class RegisterBody extends StatefulWidget {
+class RegisterBody extends StatelessWidget {
   const RegisterBody({super.key});
 
   @override
-  State<RegisterBody> createState() => _RegisterBodyState();
-}
-
-class _RegisterBodyState extends State<RegisterBody> {
-  final firstNameController = TextEditingController();
-  final lastNameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
-
-  final formKey = GlobalKey<FormState>();
-
-  @override
-  void dispose() {
-    firstNameController.dispose();
-    lastNameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final authBloc = context.read<AuthBloc>();
+
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(
-                'Registration successful! Please verify your email.',
-              ),
+              content: Text(context.tr('verification_code_sent')),
               backgroundColor: Colors.green,
             ),
           );
 
-          // context.go(AppRoutes.verifyEmailScreen);
+          context.go(
+            AppRoutes.verifyOtpScreen,
+            extra: {
+              'email': authBloc.emailController.text.trim(),
+              'source': 'register',
+            },
+          );
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message), backgroundColor: Colors.red),
@@ -62,13 +47,12 @@ class _RegisterBodyState extends State<RegisterBody> {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Form(
-              key: formKey,
+              key: authBloc.registerFormKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(height: 30.h),
 
-                  // Logo Section
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
@@ -89,7 +73,7 @@ class _RegisterBodyState extends State<RegisterBody> {
 
                   SizedBox(height: 20.h),
                   Text(
-                    "Start Your Journey",
+                    context.tr('start_your_journey'),
                     style: context.textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: context.colorScheme.primary,
@@ -97,43 +81,33 @@ class _RegisterBodyState extends State<RegisterBody> {
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    "Create an account and commit to growth",
+                    context.tr('create_account_commit'),
                     style: context.textTheme.bodyMedium?.copyWith(
-                      color: context.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                      color: context.colorScheme.onSurfaceVariant,
                     ),
                   ),
 
-                  SizedBox(height: 30.h),
-                  const AuthToggleSwitch(isLogin: false),
+                  SizedBox(height: 20.h),
+                  AuthToggleSwitch(isLogin: false),
                   SizedBox(height: 30.h),
 
                   Row(
                     children: [
                       Expanded(
                         child: CustomTextFormField(
-                          controller: firstNameController,
-                          hintText: 'First Name',
+                          controller: authBloc.firstNameController,
+                          hintText: context.tr('first_name'),
                           prefixIcon: Icon(Icons.person_outline, size: 22.w),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'First name is required';
-                            }
-                            return null;
-                          },
+                          validator: (value) => validateFirstName(value),
                         ),
                       ),
                       SizedBox(width: 15.w),
                       Expanded(
                         child: CustomTextFormField(
-                          controller: lastNameController,
-                          hintText: 'Last Name',
+                          controller: authBloc.lastNameController,
+                          hintText: context.tr('last_name'),
                           prefixIcon: Icon(Icons.person_outline, size: 22.w),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Last name is required';
-                            }
-                            return null;
-                          },
+                          validator: (value) => validateLastName(value),
                         ),
                       ),
                     ],
@@ -141,51 +115,33 @@ class _RegisterBodyState extends State<RegisterBody> {
 
                   SizedBox(height: 16.h),
                   CustomTextFormField(
-                    controller: emailController,
-                    hintText: 'Email Address',
+                    controller: authBloc.emailController,
+                    hintText: context.tr('email_address'),
                     prefixIcon: Icon(Icons.email_outlined, size: 22.w),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Email is required';
-                      }
-                      // TODO: i will do a more efficient validation later
-                      if (!value.contains('@') || !value.contains('.')) {
-                        return 'Enter a valid email';
-                      }
-                      return null;
-                    },
+                    validator: (value) => validateEmail(value),
                   ),
 
                   SizedBox(height: 16.h),
                   CustomTextFormField(
-                    controller: passwordController,
-                    hintText: 'Password',
+                    controller: authBloc.passwordController,
+                    hintText: context.tr('password'),
                     isPassword: true,
                     prefixIcon: Icon(Icons.lock_outline, size: 22.w),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Password is required';
-                      }
-                      // TODO: i will do a more efficient validation later
-                      if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
-                      }
-                      return null;
-                    },
+                    validator: (value) => validatePassword(value),
                   ),
 
                   SizedBox(height: 16.h),
                   CustomTextFormField(
-                    controller: confirmPasswordController,
-                    hintText: 'Confirm Password',
+                    controller: authBloc.confirmPasswordController,
+                    hintText: context.tr('confirm_password'),
                     isPassword: true,
                     prefixIcon: Icon(Icons.lock_outline, size: 22.w),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please confirm your password';
+                        return context.tr('please_confirm_password');
                       }
-                      if (value != passwordController.text) {
-                        return 'Passwords do not match';
+                      if (value != authBloc.passwordController.text) {
+                        return context.tr('passwords_do_not_match');
                       }
                       return null;
                     },
@@ -201,35 +157,39 @@ class _RegisterBodyState extends State<RegisterBody> {
                         alignment: Alignment.center,
                         child: CustomPrimaryButton(
                           text: isLoading
-                              ? 'Creating Account...'
-                              : 'Create Account',
+                              ? context.tr('creating_account')
+                              : context.tr('create_account'),
                           onTap: isLoading
                               ? null
                               : () {
-                                  // الفورم كي دا بيتاكد ان كل الفيلدس صح ومش فاضية ولو تمما هيعمل ريجستر ريكويست
-                                  if (formKey.currentState!.validate()) {
-                                    final request = RegisterRequestModel(
-                                      firstName: firstNameController.text,
-                                      lastName: lastNameController.text,
-                                      email: emailController.text,
-                                      password: passwordController.text,
-                                    );
-
-                                    context.read<AuthBloc>().add(
-                                      RegisterEvent(request: request),
-                                    );
-                                  }
+                                  FocusScope.of(context).unfocus();
+                                  context.read<AuthBloc>().add(RegisterEvent());
+                                  // context.go(
+                                  //   AppRoutes.verifyOtpScreen,
+                                  //   extra: {
+                                  //     "email": "mayarabdelrahim22@gmail.com",
+                                  //   },
+                                  // );
                                 },
-                          suffixIcon: Icon(
-                            Icons.arrow_forward,
-                            fontWeight: FontWeight.bold,
-                            color: context.colorScheme.onPrimary,
-                            size: 20.w,
-                          ),
+                          suffixIcon: isLoading
+                              ? SizedBox(
+                                  width: 20.w,
+                                  height: 20.w,
+                                  child: CircularProgressIndicator(
+                                    color: context.colorScheme.onPrimary,
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : Icon(
+                                  Icons.arrow_forward,
+                                  fontWeight: FontWeight.bold,
+                                  color: context.colorScheme.onPrimary,
+                                  size: 20.w,
+                                ),
                           width: 287.w,
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.r),
+                              borderRadius: BorderRadius.circular(16),
                             ),
                           ),
                         ),
@@ -239,29 +199,29 @@ class _RegisterBodyState extends State<RegisterBody> {
 
                   SizedBox(height: 30.h),
 
-                  //
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 35.w),
+                    padding: EdgeInsets.symmetric(horizontal: 50.w),
                     child: Row(
                       children: [
                         Expanded(
                           child: Divider(
-                            color: context.colorScheme.outlineVariant.withValues(
-                              alpha: 0.15,
-                            ),
+                            color: context.colorScheme.outlineVariant
+                                .withValues(alpha: 0.15),
                           ),
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 10.w),
-                          child: Text("OR", style: context.textTheme.labelMedium?.copyWith(
-                            color: context.colorScheme.primary,
-                          )),
+                          child: Text(
+                            context.tr('or'),
+                            style: context.textTheme.labelMedium?.copyWith(
+                              color: context.colorScheme.primary,
+                            ),
+                          ),
                         ),
                         Expanded(
                           child: Divider(
-                            color: context.colorScheme.outlineVariant.withValues(
-                              alpha: 0.15,
-                            ),
+                            color: context.colorScheme.outlineVariant
+                                .withValues(alpha: 0.15),
                           ),
                         ),
                       ],
@@ -276,39 +236,30 @@ class _RegisterBodyState extends State<RegisterBody> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16.r),
                         ),
-                        side: BorderSide(
-                          color: context.colorScheme.outline,
-                        ),
+                        side: BorderSide(color: context.colorScheme.outline),
                       ),
                       width: 287.w,
-                      text: 'Continue With Google',
+                      text: context.tr('continue_as_guest'),
                       onTap: () {
-                        // Google Sign In
+                        context.go(AppRoutes.homeScreen);
                       },
-                      prefixIcon: SvgPicture.asset(
-                        "assets/icons/google.svg",
-                        width: 20,
-                      ),
                     ),
                   ),
 
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 100.h),
 
-                  // Sign In
                   Center(
                     child: TextButton(
                       onPressed: () {
-                        //context.go(AppRoutes.otpScreen);
+                        context.go(AppRoutes.loginScreen);
                       },
                       child: RichText(
                         text: TextSpan(
-                          text: "Already Have An Account? ",
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            color: context.colorScheme.outlineVariant.withValues(alpha: 0.5),
-                          ),
+                          text: context.tr('already_have_account'),
+                          style: context.textTheme.bodyMedium,
                           children: [
                             TextSpan(
-                              text: "Sign In",
+                              text: context.tr('sign_in'),
                               style: TextStyle(
                                 color: context.colorScheme.primary,
                                 fontWeight: FontWeight.bold,

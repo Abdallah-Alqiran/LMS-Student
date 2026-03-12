@@ -15,33 +15,39 @@ class CustomImage extends StatelessWidget {
     this.imagePath,
     this.width,
     this.height,
-    this.aspectRatio, 
+    this.aspectRatio,
     this.borderRadius,
   });
 
   @override
   Widget build(BuildContext context) {
-
-    if (imagePath == null || imagePath!.isEmpty) {
-    return AspectRatio(
-      aspectRatio: aspectRatio ?? 16 / 10,
-      child: ClipRRect(
-        borderRadius: borderRadius ?? BorderRadius.vertical(top: Radius.circular(12.r)),
-        child: Container(
-          color: context.colorScheme.surfaceVariant,
-          child: Icon(Icons.image_not_supported, color: context.colorScheme.outline),
-        ),
-      ),
-    );
-  }
+    // if (imagePath == null || imagePath!.isEmpty) {
+    //   return AspectRatio(
+    //     aspectRatio: aspectRatio ?? 16 / 10,
+    //     child: ClipRRect(
+    //       borderRadius:
+    //           borderRadius ?? BorderRadius.vertical(top: Radius.circular(12.r)),
+    //       child: Container(
+    //         color: context.colorScheme.surfaceVariant,
+    //         child: Icon(
+    //           Icons.image_not_supported,
+    //           color: context.colorScheme.outline,
+    //         ),
+    //       ),
+    //     ),
+    //   );
+    // }
 
     return AspectRatio(
       aspectRatio: aspectRatio ?? 16 / 10, // نسبة العرض الي الطول
       child: ClipRRect(
         // عشان يبقي شكل الصورة ليها راديس من فوق زي الكونتينر
-        borderRadius: borderRadius ?? BorderRadius.vertical(top: Radius.circular(12.r)),
+        borderRadius:
+            borderRadius ?? BorderRadius.vertical(top: Radius.circular(12.r)),
         child: CachedNetworkImage(
-          imageUrl: imagePath ?? '',
+          imageUrl:
+              imagePath ??
+              'https://i.pinimg.com/736x/77/97/7e/77977e0f51ec76e51b1360e5f0685d13.jpg',
           width: width?.w,
           height: height?.h,
           fit: BoxFit.cover,
@@ -51,14 +57,18 @@ class CustomImage extends StatelessWidget {
             child: const Center(child: CircularProgressIndicator()),
           ),
           // لو الصورة حصل فيها مشكلة
-          errorWidget: (context, url, error) => Container(
-            color: context.colorScheme.onSurfaceVariant,
-            child: Icon(
-              Icons.broken_image,
-              color: context.colorScheme.outline,
-              size: 40,
-            ),
-          ),
+          errorWidget: (context, url, error) {
+            print('imagePath: $imagePath'); // هنطبع الخطأ هنا
+            print('Error: $error'); // هنطبع الخطأ هنا
+            return Container(
+              color: context.colorScheme.onSurfaceVariant,
+              child: Icon(
+                Icons.broken_image,
+                color: context.colorScheme.outline,
+                size: 40,
+              ),
+            );
+          },
         ),
       ),
     );

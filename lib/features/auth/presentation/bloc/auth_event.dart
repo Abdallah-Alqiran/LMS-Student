@@ -2,14 +2,35 @@ part of 'auth_bloc.dart';
 
 abstract class AuthEvent {}
 
-class LoginEvent extends AuthEvent {
+class RegisterEvent extends AuthEvent {}
+
+class LoginEvent extends AuthEvent {}
+
+class ClearFormEvent extends AuthEvent {}
+
+// wanna understand why
+class VerifyEmailEvent extends AuthEvent {
   final String email;
-  final String password;
-  LoginEvent({required this.email, required this.password});
+  final String otp;
+
+  VerifyEmailEvent({required this.email, required this.otp});
 }
 
-class RegisterEvent extends AuthEvent {
-  final RegisterRequestModel request;
-  
-  RegisterEvent({required this.request});
+class ResendOtpEvent extends AuthEvent {
+  final String email;
+
+  ResendOtpEvent({required this.email});
+}
+
+class ForgotPasswordEvent extends AuthEvent {
+  final String email;
+
+  ForgotPasswordEvent({required this.email});
+}
+
+class ResetPasswordEvent extends AuthEvent {
+  final ResetPasswordRequestModel requestModel;
+
+  ResetPasswordEvent({required this.requestModel});
+
 }
