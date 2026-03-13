@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
+import 'package:lms_student/core/routing/app_routes.dart';
 import 'package:lms_student/features/explore/presentation/bloc/packages_model_bloc.dart';
 import 'package:lms_student/features/explore/widget/custom_category.dart';
 import 'package:lms_student/features/explore/widget/custom_category_item.dart';
@@ -176,30 +178,58 @@ class _ExploreScreenBeforLoginState extends State<ExploreScreenBeforLogin> {
               ],
             ),
             SizedBox(height: 15.h),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 0.70,
-              ),
-              itemBuilder: (context, index) {
-                return IntrinsicHeight(
-                  child: CourseCardVertical(
-                    title: context.tr('intro_to_python'),
-                    imagePath:
-                        'https://i.pinimg.com/1200x/54/6b/8a/546b8a6248d8bb62b223c68703786d8f.jpg',
-                    rating: 4.3,
-                    totalHours: 12,
-                    width: 256,
-                    description: context.tr('description_placeholder'),
-                    instructorName: context.tr('instructor_name_placeholder'),
-                    lessonsCount: 12,
-                  ),
-                );
+            BlocBuilder<CoursesBloc, CoursesState>(
+              builder: (context, state) {
+                if (state is CoursesLoading) {
+                  return Container(
+                    height: 280.h,
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (state is CoursesError) {
+                  return Container(
+                    height: 280.h,
+                    child: Center(child: Text('Error : ${state.message}')),
+                  );
+                }
+                if (state is CoursesLoaded) {
+                  print("courses from bloc: ${state.courses}");
+
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: state.courses.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
+                      childAspectRatio: 0.70,
+                    ),
+                    itemBuilder: (context, index) {
+                      final course = state.courses[index];
+
+                      return IntrinsicHeight(
+                        child: InkWell(
+                          onTap: () {
+                            context.push(AppRoutes.course_details_screen);
+                          },
+                          child: CourseCardVertical(
+                            title: course.title,
+                            imagePath: course.image,
+                            rating: 3.4,
+                            totalHours: 12,
+                            width: 256,
+                            description: course.description,
+                            instructorName: course.instructorName,
+                            lessonsCount: 12,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+
+                return CircularProgressIndicator();
               },
             ),
           ],
