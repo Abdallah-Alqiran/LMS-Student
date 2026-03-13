@@ -90,5 +90,9 @@
   "course_title_placeholder": "title",
   "instructor_mayar": "Mayar",
   "splash_title": "The program we don't have a name for yet",
-  "splash_desc": "The most important thing is that this program has Engineer Qirany so you will be fine in any track. Register and be assured hero 😘😁"
+  "splash_desc": "The most important thing is that this program has Engineer Qirany so you will be fine in any track. Register and be assured hero 😘😁",
+  "retry": "Retry",
+  "authentication_failed": "Authentication failed",
+  "account_inactive": "Your account is not active.",
+  "account_unverified": "Please verify your email address."
 }

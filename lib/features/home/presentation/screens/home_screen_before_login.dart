@@ -13,14 +13,14 @@ import 'package:lms_student/features/widgets/custom_outlined_button.dart';
 import 'package:lms_student/features/widgets/custom_primary_button.dart';
 import 'package:lms_student/core/localization/app_localizations.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreenBeforeLogin extends StatefulWidget {
+  const HomeScreenBeforeLogin({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreenBeforeLogin> createState() => _HomeScreenBeforeLoginState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
   @override
   void initState() {
     super.initState();
@@ -273,22 +273,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 40.h),
                 FeatureCard(
-                  description:
-                      context.tr('test_your_knowledge'),
+                  description: context.tr('test_your_knowledge'),
                   path: "assets/icons/InteractiveQuizzes.png",
                   title: context.tr('interactive_quizzes'),
                 ),
                 SizedBox(height: 20.h),
                 FeatureCard(
-                  description:
-                      context.tr('test_your_knowledge'),
+                  description: context.tr('test_your_knowledge'),
                   path: "assets/icons/DiscussionBoards.png",
                   title: context.tr('discussion_boards'),
                 ),
                 SizedBox(height: 20.h),
                 FeatureCard(
-                  description:
-                      context.tr('test_your_knowledge'),
+                  description: context.tr('test_your_knowledge'),
                   path: "assets/icons/DownloadableResources.png",
                   title: context.tr('downloadable_resources'),
                 ),

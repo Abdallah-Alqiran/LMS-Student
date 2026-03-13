@@ -10,9 +10,12 @@ import 'package:lms_student/features/auth/presentation/screens/reset_password_sc
 import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
 import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
 import 'package:lms_student/features/home/presentation/screens/course_details_screen.dart';
-import 'package:lms_student/features/home/presentation/screens/home_screen.dart';
+import 'package:lms_student/features/home/presentation/screens/home_screen_before_login.dart';
+import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
+import 'package:lms_student/features/splash/presentation/bloc/splash_event.dart';
 import 'package:lms_student/features/splash/presentation/screens/splash_screen.dart';
-import 'package:lms_student/root/root.dart';
+import 'package:lms_student/root/root_after_login.dart';
+import 'package:lms_student/root/root_before_login.dart';
 
 class RouterGenerator {
   static GoRouter goRouter = GoRouter(
@@ -21,7 +24,12 @@ class RouterGenerator {
       GoRoute(
         path: AppRoutes.splashScreen,
         name: AppRoutes.splashScreen,
-        builder: (context, state) => SplashScreen(),
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => sl<SplashBloc>()..add(SplashStarted()),
+            child: const SplashScreen(),
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.loginScreen,
@@ -84,7 +92,7 @@ class RouterGenerator {
         builder: (context, state) {
           return BlocProvider(
             create: (context) => sl<CoursesBloc>(),
-            child: HomeScreen(),
+            child: HomeScreenBeforeLogin(),
           );
         },
       ),
@@ -96,12 +104,22 @@ class RouterGenerator {
         },
       ),
       GoRoute(
-        path: AppRoutes.homeScreenAfterLogin,
-        name: AppRoutes.homeScreenAfterLogin,
+        path: AppRoutes.rootAfterLogin,
+        name: AppRoutes.rootAfterLogin,
         builder: (context, state) {
           return MultiBlocProvider(
             providers: [BlocProvider(create: (context) => sl<CoursesBloc>())],
-            child: const Root(),
+            child: const RootAfterLogin(),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.rootBeforeLogin,
+        name: AppRoutes.rootBeforeLogin,
+        builder: (context, state) {
+          return MultiBlocProvider(
+            providers: [BlocProvider(create: (context) => sl<CoursesBloc>())],
+            child: const RootBeforeLogin(),
           );
         },
       ),
