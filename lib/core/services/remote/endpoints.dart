@@ -18,6 +18,9 @@ class EndPoint {
 
   // courses
   static String allCourses = "/courses/all/";
+
+  // packages
+  static String allPackages = "/packages/all/";
 }
 
 class ApiKey {

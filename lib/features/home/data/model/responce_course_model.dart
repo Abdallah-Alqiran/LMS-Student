@@ -15,14 +15,14 @@ class ResponseCourseModel {
 
   factory ResponseCourseModel.fromJson(Map<String, dynamic> json) {
     return ResponseCourseModel(
-      success: json['success'] ?? false, // لو null خد false
-      status: json['status'] ?? 0, // لو null خد 0
-      message: json['message'] ?? '', // لو null خد ''
+      success: json['success'] ?? false,
+      status: json['status'] ?? 0,
+      message: json['message'] ?? '',
       data: json['data'] != null
           ? List<CourseModel>.from(
               json['data'].map((x) => CourseModel.fromJson(x)),
             )
-          : [], // لو null خد List فاضية
+          : [],
     );
   }
 

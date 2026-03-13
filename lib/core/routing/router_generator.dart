@@ -8,6 +8,7 @@ import 'package:lms_student/features/auth/presentation/screens/login_screen/logi
 import 'package:lms_student/features/auth/presentation/screens/register_screen/register_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/reset_password_screen/reset_password_screen.dart';
 import 'package:lms_student/features/auth/presentation/screens/verify_otp_screen/verify_otp_screen.dart';
+import 'package:lms_student/features/explore/presentation/bloc/packages_model_bloc.dart';
 import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
 import 'package:lms_student/features/home/presentation/screens/course_details_screen.dart';
 import 'package:lms_student/features/home/presentation/screens/home_screen.dart';
@@ -100,7 +101,10 @@ class RouterGenerator {
         name: AppRoutes.homeScreenAfterLogin,
         builder: (context, state) {
           return MultiBlocProvider(
-            providers: [BlocProvider(create: (context) => sl<CoursesBloc>())],
+            providers: [
+              BlocProvider(create: (context) => sl<CoursesBloc>()),
+              BlocProvider(create: (context) => sl<PackageBloc>()),
+            ],
             child: const Root(),
           );
         },

@@ -17,9 +17,9 @@ class HomeRepositoryImpl implements HomeRepository {
       final response = await apiConsumer.get(EndPoint.allCourses);
       List<CourseModel> courses = [];
 
-      if (response['data'] != null && response['data'] is List) {
+      if (response['data'] != null) {
         // لو البيانات جاية في key 'data' زي ما شفنا قبل كده
-        courses = (response['data'] as List)
+        courses = (response['data']['courses'] as List)
             .map((json) => CourseModel.fromJson(json))
             .toList();
       } else if (response is List) {

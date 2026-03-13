@@ -18,3 +18,20 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
     );
   }
 }
+ // // Features - Explore
+  // sl.registerLazySingleton<ExploreRepositoryImp>(
+  //   () => ExploreRepositoryImp(apiConsumer: sl()),
+  // );
+
+  // // سجل الـ ExploreRepository أيضاً إذا احتاجته أجزاء أخرى من التطبيق
+  // sl.registerLazySingleton<ExploreRepository>(
+  //   () => sl<ExploreRepositoryImp>(), // استخدام نفس الـ instance
+  // );
+
+  // // ثم سجل الـ bloc
+  // sl.registerFactory(
+  //   () => PackageBloc(
+  //     exploreRepositoryImp: sl<ExploreRepositoryImp>(),
+  //     exploreRepository: sl<ExploreRepositoryImp>(),
+  //   ),
+  // );

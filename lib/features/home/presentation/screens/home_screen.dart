@@ -24,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // ✅ إضافة سطر واحد بس هنا
     context.read<CoursesBloc>().add(GetCoursesEvent());
   }
 
@@ -273,22 +272,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 40.h),
                 FeatureCard(
-                  description:
-                      context.tr('test_your_knowledge'),
+                  description: context.tr('test_your_knowledge'),
                   path: "assets/icons/InteractiveQuizzes.png",
                   title: context.tr('interactive_quizzes'),
                 ),
                 SizedBox(height: 20.h),
                 FeatureCard(
-                  description:
-                      context.tr('test_your_knowledge'),
+                  description: context.tr('test_your_knowledge'),
                   path: "assets/icons/DiscussionBoards.png",
                   title: context.tr('discussion_boards'),
                 ),
                 SizedBox(height: 20.h),
                 FeatureCard(
-                  description:
-                      context.tr('test_your_knowledge'),
+                  description: context.tr('test_your_knowledge'),
                   path: "assets/icons/DownloadableResources.png",
                   title: context.tr('downloadable_resources'),
                 ),
