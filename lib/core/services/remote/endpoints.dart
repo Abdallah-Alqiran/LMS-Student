@@ -15,7 +15,7 @@ class EndPoint {
   static String resetPassword = "/auth/reset-password/";
   static String refreshToken = "/auth/token/refresh/";
   static String verifyEmail = "/auth/verify-email/";
-  static String checkAuth = "/auth/check-auth/";
+  static String checkToken = "/auth/check-token/";
 
   // courses
   static String allCourses = "/courses/all/";
@@ -23,6 +23,7 @@ class EndPoint {
 
 class ApiKey {
   static String message = "message";
+  static String authorization = "Authorization";
   static String firstName = "first_name";
   static String lastName = "last_name";
   static String email = "email";

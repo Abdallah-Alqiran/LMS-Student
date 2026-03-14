@@ -14,6 +14,7 @@
   "forgot_password_question": "Forgot Password?",
   "signing_in": "Signing In...",
   "login": "Login",
+  "register": "Register",
   "sign_in": "Sign In",
   "or": "OR",
   "continue_as_guest": "Continue as a Guest",
@@ -93,6 +94,8 @@
   "splash_desc": "The most important thing is that this program has Engineer Qirany so you will be fine in any track. Register and be assured hero 😘😁",
   "retry": "Retry",
   "authentication_failed": "Authentication failed",
+  "no_token_found": "No token found",
+  "session_expired": "Session expired",
   "account_inactive": "Your account is not active.",
   "account_unverified": "Please verify your email address."
 }

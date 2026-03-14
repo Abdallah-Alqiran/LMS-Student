@@ -35,10 +35,12 @@ class CheckAuthResponseModel {
 class CheckAuthDataModel {
   final bool? isActive;
   final bool? isVerified;
+  final String? message;
 
   const CheckAuthDataModel({
     this.isActive,
     this.isVerified,
+    this.message
   });
 
   factory CheckAuthDataModel.fromJson(Map<String, dynamic> json) {

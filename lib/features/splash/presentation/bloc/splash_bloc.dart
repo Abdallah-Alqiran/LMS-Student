@@ -17,7 +17,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     emit(SplashLoading());
     final result = await splashRepository.checkLogin();
     result.fold((checkAuthDataModel) {
-      if (checkAuthDataModel.isActive! && checkAuthDataModel.isVerified!) {
+      if (checkAuthDataModel.isActive != null && checkAuthDataModel.isVerified != null && checkAuthDataModel.isActive! && checkAuthDataModel.isVerified!) {
         emit(SplashLoaded());
       } else {
         emit(SplashError(

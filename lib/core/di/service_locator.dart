@@ -9,7 +9,6 @@ import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:lms_student/features/home/data/repositories/home_repository_impl.dart';
 import 'package:lms_student/features/home/domain/repositories/home_repository.dart';
 import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
-import 'package:lms_student/features/splash/data/repositories/splash_repo_impl_mock.dart';
 import 'package:lms_student/features/splash/data/repositories/splash_repository_impl.dart';
 import 'package:lms_student/features/splash/domain/splash_repository.dart';
 import 'package:lms_student/features/splash/presentation/bloc/splash_bloc.dart';
@@ -42,10 +41,7 @@ Future<void> setupServiceLocator() async {
 
   // Splash - Login
   sl.registerLazySingleton<SplashRepository>(
-    // Real Backend Data
-    // () => SplashRepositoryImpl(apiConsumer: sl()),
-    // Mockup Data
-    () => SplashRepositoryImplMock(apiConsumer: sl()),
+    () => SplashRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
   );
   sl.registerFactory(() => SplashBloc(splashRepository: sl()));
 }
