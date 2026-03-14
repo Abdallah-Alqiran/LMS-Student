@@ -6,6 +6,9 @@ import 'package:lms_student/core/services/remote/dio_consumer.dart';
 import 'package:lms_student/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:lms_student/features/auth/domain/repositories/auth_repository.dart';
 import 'package:lms_student/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:lms_student/features/explore/data/repository/explore_repository_imp.dart';
+import 'package:lms_student/features/explore/domain/repositories/explore_repository.dart';
+import 'package:lms_student/features/explore/presentation/bloc/packages_model_bloc.dart';
 import 'package:lms_student/features/home/data/repositories/home_repository_impl.dart';
 import 'package:lms_student/features/home/domain/repositories/home_repository.dart';
 import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
@@ -44,4 +47,14 @@ Future<void> setupServiceLocator() async {
     () => SplashRepositoryImpl(apiConsumer: sl(), cacheHelper: sl()),
   );
   sl.registerFactory(() => SplashBloc(splashRepository: sl()));
+
+  // Features - Explore
+  sl.registerLazySingleton<ExploreRepository>(
+    () => ExploreRepositoryImp(apiConsumer: sl()),
+  );
+
+  // register factory for PackageBloc
+  sl.registerFactory(
+    () => PackageBloc(exploreRepository: sl<ExploreRepository>()),
+  );
 }

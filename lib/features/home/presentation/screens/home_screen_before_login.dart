@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lms_student/core/extensions/context_extensions.dart';
 import 'package:lms_student/core/routing/app_routes.dart';
+import 'package:lms_student/core/theme/app_assets.dart';
 import 'package:lms_student/features/home/presentation/bloc/courses_bloc.dart';
 import 'package:lms_student/features/home/widgets/custom_rich_text.dart';
 import 'package:lms_student/features/home/widgets/feature_card.dart';
@@ -24,7 +25,6 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
   @override
   void initState() {
     super.initState();
-    // ✅ إضافة سطر واحد بس هنا
     context.read<CoursesBloc>().add(GetCoursesEvent());
   }
 
@@ -189,7 +189,7 @@ class _HomeScreenBeforeLoginState extends State<HomeScreenBeforeLogin> {
                   SizedBox(height: 40.h),
                   Center(
                     child: Image.asset(
-                      "assets/images/Home.png",
+                      AppAssets.homePng,
                       fit: BoxFit.contain,
                       width: 200.w,
                       height: 120.h,
